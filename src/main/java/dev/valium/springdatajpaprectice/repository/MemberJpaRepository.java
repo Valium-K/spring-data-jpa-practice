@@ -1,6 +1,7 @@
 package dev.valium.springdatajpaprectice.repository;
 
 import dev.valium.springdatajpaprectice.entity.Member;
+import dev.valium.springdatajpaprectice.entity.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,9 @@ public class MemberJpaRepository {
         return Optional.ofNullable(find(id));
     }
 
+    public void delete(Member member) {
+        em.remove(member);
+    }
     public long count() {
         return em.createQuery(
                 "select count(m) from Member m", Long.class)
