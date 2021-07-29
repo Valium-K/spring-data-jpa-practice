@@ -26,6 +26,11 @@ public class Member {
         this.userName = userName;
     }
 
+    public Member(String userName, int age) {
+        this.userName = userName;
+        this.age = age;
+    }
+
     public void changeTeam(Team team) {
         this.team = team; // 해당 member의 team 연관관계 설정
         team.getMembers().add(this); // team의 member도 연관관계 설정
