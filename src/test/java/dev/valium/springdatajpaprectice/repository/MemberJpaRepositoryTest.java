@@ -59,4 +59,26 @@ class MemberJpaRepositoryTest {
         long deletedCount = memberJpaRepository.count();
         assertThat(deletedCount).isEqualTo(0);
     }
+
+    @Test
+    public void paging() throws Exception {
+        // given
+        memberJpaRepository.save(new Member("mem1", 10));
+        memberJpaRepository.save(new Member("mem2", 10));
+        memberJpaRepository.save(new Member("mem3", 10));
+        memberJpaRepository.save(new Member("mem4", 10));
+        memberJpaRepository.save(new Member("mem5", 10));
+
+        int age = 10;
+        int offset = 0;
+        int limit = 3;
+
+        // when
+        List<Member> members = memberJpaRepository.findByPage(age, offset, limit);
+        long totalCount = memberJpaRepository.totalCount(age);
+
+        // then
+        assertThat(members.size()).isEqualTo(3);
+        assertThat(totalCount).isEqualTo(5);
+    }
 }
