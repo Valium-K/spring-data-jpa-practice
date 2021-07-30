@@ -10,6 +10,10 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * 순수 JPA를 이용한 Repository
+ */
 @Repository
 @RequiredArgsConstructor
 public class MemberJpaRepository {
@@ -41,6 +45,25 @@ public class MemberJpaRepository {
     public long count() {
         return em.createQuery(
                 "select count(m) from Member m", Long.class)
+                .getSingleResult();
+    }
+
+    // 페이징
+    // 자르는 기준: age,     페이징 쿼리: offset, limit
+    public List<Member> findByPage(int age, int offset, int limit) {
+        return em.createQuery(
+                "select m from Member m where m.age = :age order by m.userName desc", Member.class)
+                .setParameter("age", age)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+    // 보통 페이징 시 현제 페이지위치를 알아오기 위해 함께 짜는 코드
+    // totalCount / (보여져야 할 컨텐츠 수) = 전체 페이지 수 를 구하기위함이다.
+    public long totalCount(int age) {
+        return em.createQuery(
+                "select count(m) from Member m where m.age = :age", Long.class)
+                .setParameter("age", age)
                 .getSingleResult();
     }
 }
