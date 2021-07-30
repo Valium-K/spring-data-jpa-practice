@@ -1,12 +1,20 @@
 package dev.valium.springdatajpaprectice.repository;
 
+import dev.valium.springdatajpaprectice.dto.MemberDto;
 import dev.valium.springdatajpaprectice.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
+/**
+ *
+ * Spring Data Jpa를 이용한 repository
+ */
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // 메소드 이름으로 쿼리 생성
@@ -17,4 +25,25 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> This_method_and_upper_method_is_exactly_the_same(
             @Param("userName") String username,
             @Param("age") int age);
+
+    // @Query를 통한 값 추출
+    @Query("select m.userName from Member m where m.userName = :userName")
+    List<String> findAllByUserName(@Param("userName") String userName);
+
+    // @Query + jpql dto 추출
+    @Query("select new dev.valium.springdatajpaprectice.dto.MemberDto(m.id, m.userName, t.name) from Member m join m.team t")
+    List<MemberDto> findMemberDto();
+
+    // 컬렉션 파라미터 바인딩
+    @Query("select m from Member m where m.userName in :names")
+    List<Member> findByNames(@Param("names") List<String> names);
+
+
+    // 유연한 반환타입
+    Member findOneByUserName(String userName); // 단건 - 없을경우 null
+    List<Member> findManyByUserName(String userName); // 컬렉션 - null이 아님을 보장
+    Optional<Member> findOptionalByUserName(String userName); // Optional
+
+    // age로 페이징
+    Page<Member> findByAge(int age, Pageable pageable);
 }
