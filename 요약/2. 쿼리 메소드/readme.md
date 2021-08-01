@@ -33,3 +33,13 @@
 * Page index는 0부터 시작이다.
 * Page에서 자동으로 생성하는 totalCount쿼리의 최적화가 필요하다면(기본적으로 전체조회는 무겁기에),
   * `@Query(value = "쿼리",  countQuery = "카운트 쿼리")`를 직접 작성한다.
+  
+### 벌크성 수정쿼리
+* where 문에 만족하는 조건에 대해 벌크연산 및 update한 갯수를 리턴한다.
+* 벌크연산은 영속성 컨텍스트를 무시하고 DB에 update를 하기에 주의해야한다.
+  * 순수 JPA: 벌크연산 직후 em.flush(); em.clear(); 를 하면 된다.
+  * spring data jpa: `@Modifying(clearAutomatically = true)` 을 준다.
+  
+### @EntityGraph
+* 간단한 jpql의 fetch join시 사용가능하다.
+  * `@EntityGraph(attributepaths = {"조인_대상을_가리키는_필드명"})`
