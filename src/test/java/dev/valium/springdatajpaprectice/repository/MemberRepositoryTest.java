@@ -1,6 +1,7 @@
 package dev.valium.springdatajpaprectice.repository;
 
 import dev.valium.springdatajpaprectice.entity.Member;
+import dev.valium.springdatajpaprectice.entity.Team;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+    @Autowired TeamRepository teamRepository;
+    @Autowired EntityManager em;
 
     @Test
     public void memberTest() throws Exception {
