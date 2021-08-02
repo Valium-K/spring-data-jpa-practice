@@ -23,6 +23,8 @@
   
 ### page
 * 상속관계는 Slice < Page < PageResult(구현체) 이다.
+  * PageRequest는 Pageable의 구현체이다.
+  
 * Slice는 가져올 size를 정의하지만 실제로는 size+1만큼 가져온다.
   * 모바일에서 뒤에 컨텐츠가 더 있을을 알리는 용도로 사용가능(ex. 더보기 버튼에 컨텐츠를 흐릿하게 겹침)
 
@@ -34,6 +36,10 @@
 * Page에서 자동으로 생성하는 totalCount쿼리의 최적화가 필요하다면(기본적으로 전체조회는 무겁기에),
   * `@Query(value = "쿼리",  countQuery = "카운트 쿼리")`를 직접 작성한다.
   
+#### 구현방법
+1. 메소드 쿼리 등록: `Page<Member> findByAge(int age, Pageable pageable);`
+2. PageRequest를 구현 후 사용: [spring data jpa를 이용한 페이징과 그 기능들](src/main/java/dev/valium/springdatajpaprectice/repository/MemberRepository.java)
+
 ### 벌크성 수정쿼리
 * where 문에 만족하는 조건에 대해 벌크연산 및 update한 갯수를 리턴한다.
 * 벌크연산은 영속성 컨텍스트를 무시하고 DB에 update를 하기에 주의해야한다.
