@@ -16,7 +16,7 @@ import java.util.Optional;
  *
  * Spring Data Jpa를 이용한 repository
  */
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
 
     // 메소드 이름으로 쿼리 생성
     List<Member> findByUserNameAndAgeGreaterThan(String username, int age);
