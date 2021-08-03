@@ -55,4 +55,11 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     @Query("select m from Member m join fetch m.team")
     List<Member> findAllfm();
+
+
+    @Query(value = "select m.member_id as id, m.userName, t.name as teamName" +
+            " from member m left join team t",
+            countQuery = "select count(*) from member",
+            nativeQuery = true)
+    Page<MemberProjection> findByNativeProjection(Pageable pageable);
 }
